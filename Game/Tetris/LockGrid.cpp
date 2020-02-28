@@ -19,24 +19,18 @@ namespace SDLFramework
 		delete sInstance;
 	}
 
-	void LockGrid::CheckRow()
+	void LockGrid::CheckPosition()
 	{
-		//check the grid for any rows that player has scored
-		for (int i = 0; i < mRows; i++)
+		for (int i = 0; i < mColumns; i++)
 		{
-			mRowCounter = 0;
-			for (int j = 0; i < mColumns; j++)
+			for (int j = 0; j < mRows; j++)
 			{
-				//if this iteratation and the next one are both true, tick up the row counter
-				if (bLockGrid[i][j] == true && bLockGrid[i + 1][j + 1] == true)
+				if (pieceRow == j && pieceColumn == i)
 				{
-					mRowCounter += 1;
-				}
-				//when the row counter hits 5, set the row to false and add points to players score
-				if (mRowCounter == 5)
-				{
-					bLockGrid[i][mColumns] = false;
-					//add score to players score
+					GridPiece[mColumns][mRows] = new Texture("GameSprites.png", 38, 160, 7, 7);
+					GridPiece[mColumns][mRows]->SetParent(this);
+					GridPiece[mColumns][mRows]->SetScale(Vector2(3.5f, 3.5f));
+					GridPiece[mColumns][mRows]->SetPosition(Graphics::SCREEN_WIDTH * 0.395f + (j * 22), Graphics::SCREEN_HEIGHT * 0.185f + (i * 22));
 				}
 			}
 		}
@@ -47,9 +41,9 @@ namespace SDLFramework
 		int k = (int)pos.x;
 		int l = (int)pos.y;
 
-		for (int i = 0; i < mRows; i++)
+		for (int i = 0; i < mColumns; i++)
 		{
-			for (int j = 0; j < mColumns; j++)
+			for (int j = 0; j < mRows; j++)
 			{
 				if (bLockGrid[k][l] == true && bLockGrid[k + 10][l + 10] == true)
 				{
@@ -59,45 +53,26 @@ namespace SDLFramework
 		}
 	}
 
-	void LockGrid::SetBox(int x, int y)
+	void LockGrid::NewPiece()
 	{
-		int k = (int)x;
-		int l = (int)y;
-		std::printf("\r\n");
-		for (int i = 0; i < mRows; i++)
-		{
-			for (int j = 0; j < mColumns; j++)
-			{
-				if (bLockGrid[i][j] == bLockGrid[x][y])
-				{
-					bLockGrid[k][l] = true;
-					std::printf("O ");
-				}
-				else
-				{
-					std::printf("X ");
-				}
-				//will need some sort of switch later for different piece shapes
-			}
-			std::printf("\r\n");
-		}
-		std::printf("\r\n");
+		pieceColumn = 1;
+		pieceRow = 5;
+		CheckPosition();
+
 	}
 
 	void LockGrid::MakeGrid()
 	{
-		std::printf("\r\n");
-		for (int i = 0; i < mRows; i++)
+		for (int i = 0; i < mColumns; i++)
 		{
-			for (int j = 0; j < mColumns; j++)
+			for (int j = 0; j < mRows; j++)
 			{
-				bLockGrid[i][j] = false;
-				std::printf("X ");
+				/*GridPiece[j][i] = new Texture("GameSprites.png", 38, 160, 7, 7);
+				GridPiece[j][i]->SetParent(this);
+				GridPiece[j][i]->SetScale(Vector2(3.5f, 3.5f));
+				GridPiece[j][i]->SetPosition(Graphics::SCREEN_WIDTH * 0.395f + (j * 22), Graphics::SCREEN_HEIGHT * 0.185f + (i * 22));*/
 			}
-			std::printf("\r\n");
 		}
-		std::printf("\r\n");
-		std::printf("grid made ");
 	}
 
 	LockGrid::LockGrid()
@@ -105,11 +80,24 @@ namespace SDLFramework
 		mRowCounter = 0;
 		std::printf("Constructor called ");
 		std::printf("\r\n");
-		MakeGrid();
+
+
+		for (int i = 0; i < mColumns; i++)
+		{
+			for (int j = 0; j < mRows; j++)
+			{
+				if (pieceRow == j && pieceColumn == i)
+				{
+					GridPiece[mColumns][mRows] = new Texture("GameSprites.png", 38, 160, 7, 7);
+					GridPiece[mColumns][mRows]->SetParent(this);
+					GridPiece[mColumns][mRows]->SetScale(Vector2(3.5f, 3.5f));
+					GridPiece[mColumns][mRows]->SetPosition(Graphics::SCREEN_WIDTH * 0.395f + (j * 22), Graphics::SCREEN_HEIGHT * 0.185f + (i * 22));
+				}
+			}
+		}
 	}
 
 	LockGrid::~LockGrid()
 	{
-		
 	}
 }

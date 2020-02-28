@@ -24,6 +24,8 @@ namespace SDLFramework
 		//background
 		Texture* mBackground;
 
+		Texture* grid[10][24];
+
 		//Next Block
 		Texture* mNextBlockT;
 		Texture* mNextBlockJ;

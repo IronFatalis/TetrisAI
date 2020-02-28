@@ -25,6 +25,8 @@ namespace SDLFramework
 			std::printf("instance made on game screen ");
 		}
 
+		mGrid->MakeGrid();
+
 		/*mRandom->SetNextPiece();
 		mRandom->GetCurrentPiece();
 		mRandom->SetCurrentPiece();
@@ -107,36 +109,37 @@ namespace SDLFramework
 		{
 			for (int i = 1; i < 5; ++i)
 			{
-				if (CurrentLocationX <= 40 && CurrentLocationY <= 1310 && mInput->KeyPressed(SDL_SCANCODE_RIGHT))
+				if (mGrid->pieceRow < 9 && mGrid->pieceColumn < 23 && mInput->KeyPressed(SDL_SCANCODE_RIGHT))
 				{
 					if (i == 4)
 					{
-						CurrentLocationX += 22;
+						mGrid->pieceRow++;
+						mGrid->CheckPosition();
 						mAudio->PlaySFX("SFX/LeftRight.wav", 0, 1);
 					}
 					mPieces->MoveRight();
-					mGrid->SetBox(CurrentLocationX / 22, CurrentLocationY / 22);
 				}
-				else if (CurrentLocationX >= -50 && CurrentLocationY <= 1310 && mInput->KeyPressed(SDL_SCANCODE_LEFT))
+				else if (mGrid->pieceRow > 0 && mGrid->pieceColumn < 23 && mInput->KeyPressed(SDL_SCANCODE_LEFT))
 				{
 					if (i == 4)
 					{
-						CurrentLocationX -= 22;
+						mGrid->pieceRow--;
+						mGrid->CheckPosition();
 						mAudio->PlaySFX("SFX/LeftRight.wav", 0, 1);
 					}
 					mPieces->MoveLeft();
-					mGrid->SetBox(CurrentLocationX / 22, CurrentLocationY / 22);
 				}
-				else if (CurrentLocationY <= 1310 && mInput->KeyDown(SDL_SCANCODE_DOWN))
+				else if (mGrid->pieceColumn < 23 && mInput->KeyDown(SDL_SCANCODE_DOWN))
 				{
 					if (i == 4)
 					{
-						CurrentLocationY += 22;
-						mPieces->MoveDown();
-						mGrid->SetBox(CurrentLocationX/22,CurrentLocationY/22);
+						mGrid->pieceColumn++;
+						mGrid->CheckPosition();
+						PieceDrop = 0;
+						mTimer->Reset();
 					}
 				}
-				else if (CurrentLocationY >= 1310)
+				else if (mGrid->pieceColumn > 22)
 				{
 					mAudio->PlaySFX("SFX/HitFloor.wav", 0, 1);
 					mRandom->SetCurrentPiece();
@@ -144,30 +147,25 @@ namespace SDLFramework
 					mRandom->GetCurrentPiece();
 					mScores->AddScore(100);
 					mScores->AddLine(1);
-					CurrentLocationY = 0;
-					CurrentLocationX = 0;
+					mGrid->NewPiece();
 					bLockedPieces = true;
 					mPieces->NewPiece();
-					mGrid->SetBox(CurrentLocationX / 22, CurrentLocationY / 22);
 				}
 
 				if (PieceDrop >= 10)	//speed
 				{
 					mTimer->Reset();
-					CurrentLocationY += 22;
 					PieceDrop = 0;
-					if (CurrentLocationY <= 1310)
+					if (mGrid->pieceColumn < 23)
 					{
-						for (int j = 1; j < 5; ++j)
-						{
-							mPieces->MoveDown();
-						}
+							mGrid->pieceColumn++;
+							mGrid->CheckPosition();
 					}
 					else
 					{
 						mAudio->PlaySFX("SFX/HitFloor.wav", 0, 1);
-						mRandom->SetCurrentPiece();
-						mRandom->SetNextPiece();
+						mGrid->NewPiece();
+
 						mRandom->GetCurrentPiece();
 
 						mScores->AddLine(1);
@@ -176,7 +174,6 @@ namespace SDLFramework
 						CurrentLocationX = 0;
 						bLockedPieces = true;
 						mPieces->NewPiece();
-						mGrid->SetBox(CurrentLocationX / 22, CurrentLocationY / 22);
 					}
 				}
 				else
@@ -199,7 +196,20 @@ namespace SDLFramework
 		mScores->Render();
 
 		//Render player's piece
-		mPieces->Render();
+		//mPieces->Render();
+
+
+		for (int i = 0; i < mGrid->mColumns; i++)
+		{
+			for (int j = 0; j < mGrid->mRows; j++)
+			{
+				if (mGrid->pieceRow == j && mGrid->pieceColumn == i)
+				{
+					mGrid->GridPiece[mGrid->mColumns][mGrid->mRows]->Render();			//draw grid
+				}
+			}
+		}
+		//mGrid->GridPiece[5][1]->Render();		//main spawn piece
 
 		//Next Block
 		switch (mRandom->GetNextPiece())

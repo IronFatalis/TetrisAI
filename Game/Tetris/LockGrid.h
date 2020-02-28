@@ -12,8 +12,7 @@ namespace SDLFramework
 	private:
 
 		//how many rows and columns the grid will be
-		static const int mRows = 24;
-		static const int mColumns = 10;
+		
 
 		int mRowCounter;
 
@@ -25,16 +24,25 @@ namespace SDLFramework
 
 		void MakeGrid();
 
-		bool bLockGrid[mRows][mColumns];
-		int mGrid[mRows][mColumns];
+		static const int mRows = 10;
+		static const int mColumns = 24;
+
+		bool bLockGrid[mColumns][mRows];
+		int mGrid[mColumns][mRows];
 
 		static LockGrid* Instance();
 		static void Release();
 
 		//will be used to see if a player can clear a row
-		void CheckRow();
+		void CheckPosition();
 		void CollisionCheck(Vector2 pos);
-		void SetBox(int x, int y);
+		void NewPiece();
+
+		Texture* GridPiece[mColumns][mRows];
+
+		int pieceColumn = 1;
+		int pieceRow = 5;
+
 	};
 }
 #endif
