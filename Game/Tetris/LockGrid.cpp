@@ -27,10 +27,16 @@ namespace SDLFramework
 			{
 				if (pieceRow == j && pieceColumn == i)
 				{
-					GridPiece[mColumns][mRows] = new Texture("GameSprites.png", 38, 160, 7, 7);
-					GridPiece[mColumns][mRows]->SetParent(this);
-					GridPiece[mColumns][mRows]->SetScale(Vector2(3.5f, 3.5f));
-					GridPiece[mColumns][mRows]->SetPosition(Graphics::SCREEN_WIDTH * 0.395f + (j * 22), Graphics::SCREEN_HEIGHT * 0.185f + (i * 22));
+					for (int z = 0; z < 4; z++)
+					{
+						GridPiece[z][mColumns][mRows] = new Texture("GameSprites.png", 38, 160, 7, 7);
+						GridPiece[z][mColumns][mRows]->SetParent(this);
+						GridPiece[z][mColumns][mRows]->SetScale(Vector2(3.5f, 3.5f));
+					}
+					GridPiece[0][mColumns][mRows]->SetPosition(Graphics::SCREEN_WIDTH * 0.395f + ((j * 22) + (22 * 0)), Graphics::SCREEN_HEIGHT * 0.185f + (i * 22));
+					GridPiece[1][mColumns][mRows]->SetPosition(Graphics::SCREEN_WIDTH * 0.395f + ((j * 22) + (22 * 1)), Graphics::SCREEN_HEIGHT * 0.185f + (i * 22));
+					GridPiece[2][mColumns][mRows]->SetPosition(Graphics::SCREEN_WIDTH * 0.395f + ((j * 22) + (22 * 2)), Graphics::SCREEN_HEIGHT * 0.185f + (i * 22));
+					GridPiece[3][mColumns][mRows]->SetPosition(Graphics::SCREEN_WIDTH * 0.395f + ((j * 22) + (22 * 3)), Graphics::SCREEN_HEIGHT * 0.185f + (i * 22));
 				}
 			}
 		}
@@ -45,10 +51,7 @@ namespace SDLFramework
 		{
 			for (int j = 0; j < mRows; j++)
 			{
-				if (bLockGrid[k][l] == true && bLockGrid[k + 10][l + 10] == true)
-				{
-					//collison happens, block cannot go any lower
-				}
+
 			}
 		}
 	}
@@ -88,10 +91,32 @@ namespace SDLFramework
 			{
 				if (pieceRow == j && pieceColumn == i)
 				{
-					GridPiece[mColumns][mRows] = new Texture("GameSprites.png", 38, 160, 7, 7);
-					GridPiece[mColumns][mRows]->SetParent(this);
-					GridPiece[mColumns][mRows]->SetScale(Vector2(3.5f, 3.5f));
-					GridPiece[mColumns][mRows]->SetPosition(Graphics::SCREEN_WIDTH * 0.395f + (j * 22), Graphics::SCREEN_HEIGHT * 0.185f + (i * 22));
+					for (int z = 0; z < 4; z++)
+					{
+						GridPiece[z][mColumns][mRows] = new Texture("GameSprites.png", 38, 160, 7, 7);
+						GridPiece[z][mColumns][mRows]->SetParent(this);
+						GridPiece[z][mColumns][mRows]->SetScale(Vector2(3.5f, 3.5f));
+					}																						//+right												+down
+
+					GridPiece[0][mColumns][mRows]->SetPosition(Graphics::SCREEN_WIDTH * 0.395f + (j * 22) + (22 * 0), Graphics::SCREEN_HEIGHT * 0.185f + (i * 22) + (22 * 0));
+					GridPiece[1][mColumns][mRows]->SetPosition(Graphics::SCREEN_WIDTH * 0.395f + (j * 22) + (22 * 0), Graphics::SCREEN_HEIGHT * 0.185f + (i * 22) + (22 * -1));
+					GridPiece[2][mColumns][mRows]->SetPosition(Graphics::SCREEN_WIDTH * 0.395f + (j * 22) + (22 * 1), Graphics::SCREEN_HEIGHT * 0.185f + (i * 22) + (22 * 0));
+					GridPiece[3][mColumns][mRows]->SetPosition(Graphics::SCREEN_WIDTH * 0.395f + (j * 22) + (22 * 2), Graphics::SCREEN_HEIGHT * 0.185f + (i * 22) + (22 * 0));
+
+					/*GridPiece[0][mColumns][mRows]->SetPosition(Graphics::SCREEN_WIDTH * 0.395f + (j * 22) + (22*0), Graphics::SCREEN_HEIGHT * 0.185f + (i * 22)+ (22*0));
+					GridPiece[1][mColumns][mRows]->SetPosition(Graphics::SCREEN_WIDTH * 0.395f + (j * 22) + (22*-1), Graphics::SCREEN_HEIGHT * 0.185f + (i * 22) + (22*0));
+					GridPiece[2][mColumns][mRows]->SetPosition(Graphics::SCREEN_WIDTH * 0.395f + (j * 22) + (22*0), Graphics::SCREEN_HEIGHT * 0.185f + (i * 22) + (22*-1));
+					GridPiece[3][mColumns][mRows]->SetPosition(Graphics::SCREEN_WIDTH * 0.395f + (j * 22) + (22*0), Graphics::SCREEN_HEIGHT * 0.185f + (i * 22) + (22*-2));*/
+
+					/*GridPiece[0][mColumns][mRows]->SetPosition(Graphics::SCREEN_WIDTH * 0.395f + (j * 22) + (22 * 0), Graphics::SCREEN_HEIGHT * 0.185f + (i * 22) + (22 * 0));
+					GridPiece[1][mColumns][mRows]->SetPosition(Graphics::SCREEN_WIDTH * 0.395f + (j * 22) + (22 * 1), Graphics::SCREEN_HEIGHT * 0.185f + (i * 22) + (22 * 0));
+					GridPiece[2][mColumns][mRows]->SetPosition(Graphics::SCREEN_WIDTH * 0.395f + (j * 22) + (22 * 0), Graphics::SCREEN_HEIGHT * 0.185f + (i * 22) + (22 * 1));
+					GridPiece[3][mColumns][mRows]->SetPosition(Graphics::SCREEN_WIDTH * 0.395f + (j * 22) + (22 * 0), Graphics::SCREEN_HEIGHT * 0.185f + (i * 22) + (22 * 2));*/
+			
+					/*GridPiece[0][mColumns][mRows]->SetPosition(Graphics::SCREEN_WIDTH * 0.395f + (j * 22) + (22 * 0), Graphics::SCREEN_HEIGHT * 0.185f + (i * 22) + (22 * 0));
+					GridPiece[1][mColumns][mRows]->SetPosition(Graphics::SCREEN_WIDTH * 0.395f + (j * 22) + (22 * 0), Graphics::SCREEN_HEIGHT * 0.185f + (i * 22) + (22 * 1));
+					GridPiece[2][mColumns][mRows]->SetPosition(Graphics::SCREEN_WIDTH * 0.395f + (j * 22) + (22 * -1), Graphics::SCREEN_HEIGHT * 0.185f + (i * 22) + (22 * 0));
+					GridPiece[3][mColumns][mRows]->SetPosition(Graphics::SCREEN_WIDTH * 0.395f + (j * 22) + (22 * -2), Graphics::SCREEN_HEIGHT * 0.185f + (i * 22) + (22 * 0));*/
 				}
 			}
 		}

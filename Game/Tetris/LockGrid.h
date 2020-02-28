@@ -24,11 +24,8 @@ namespace SDLFramework
 
 		void MakeGrid();
 
-		static const int mRows = 10;
-		static const int mColumns = 24;
-
-		bool bLockGrid[mColumns][mRows];
-		int mGrid[mColumns][mRows];
+		int mRows = 10;
+		int mColumns = 24;
 
 		static LockGrid* Instance();
 		static void Release();
@@ -38,7 +35,7 @@ namespace SDLFramework
 		void CollisionCheck(Vector2 pos);
 		void NewPiece();
 
-		Texture* GridPiece[mColumns][mRows];
+		Texture* GridPiece[5][24][10];
 
 		int pieceColumn = 1;
 		int pieceRow = 5;

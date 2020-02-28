@@ -205,7 +205,10 @@ namespace SDLFramework
 			{
 				if (mGrid->pieceRow == j && mGrid->pieceColumn == i)
 				{
-					mGrid->GridPiece[mGrid->mColumns][mGrid->mRows]->Render();			//draw grid
+					for (int z = 0; z < 4; z++)
+					{
+						mGrid->GridPiece[z][mGrid->mColumns][mGrid->mRows]->Render();			//draw grid
+					}
 				}
 			}
 		}

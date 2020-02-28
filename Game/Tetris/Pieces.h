@@ -3,6 +3,7 @@
 #include "GameEntity.h"
 #include "AnimatedTexture.h"
 #include "Random.h"
+#include "LockGrid.h"
 
 namespace SDLFramework
 {
