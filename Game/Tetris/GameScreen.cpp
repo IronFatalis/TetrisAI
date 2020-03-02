@@ -107,6 +107,18 @@ namespace SDLFramework
 	{
 		if (!mTypeManager->GetGameType())
 		{
+			if (mInput->KeyPressed(SDL_SCANCODE_SPACE))
+			{
+				if (mGrid->rotate > 2)
+				{
+					mGrid->rotate = 0;
+				}
+				else
+				{
+					mGrid->rotate++;
+				}
+				mGrid->CheckPosition();
+			}
 			for (int i = 1; i < 5; ++i)
 			{
 				if (mGrid->pieceRow < 9 && mGrid->pieceColumn < 23 && mInput->KeyPressed(SDL_SCANCODE_RIGHT))

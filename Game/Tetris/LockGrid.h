@@ -3,6 +3,7 @@
 #include "GameEntity.h"
 #include "AnimatedTexture.h" //for testing where the grid is
 #include "LockBlock.h"
+#include "Random.h"
 #include <vector>
 
 namespace SDLFramework
@@ -10,9 +11,7 @@ namespace SDLFramework
 	class LockGrid : public GameEntity
 	{
 	private:
-
-		//how many rows and columns the grid will be
-		
+		Random* mRandom;
 
 		int mRowCounter;
 
@@ -23,6 +22,7 @@ namespace SDLFramework
 		~LockGrid();
 
 		void MakeGrid();
+		void PieceShape(int j, int i);
 
 		int mRows = 10;
 		int mColumns = 24;
@@ -36,6 +36,8 @@ namespace SDLFramework
 		void NewPiece();
 
 		Texture* GridPiece[5][24][10];
+
+		int rotate = 0;
 
 		int pieceColumn = 1;
 		int pieceRow = 5;
