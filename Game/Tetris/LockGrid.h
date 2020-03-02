@@ -14,6 +14,7 @@ namespace SDLFramework
 		Random* mRandom;
 
 		int mRowCounter;
+		int slotSize = 22;
 
 		static LockGrid* sInstance;
 
@@ -22,10 +23,14 @@ namespace SDLFramework
 		~LockGrid();
 
 		void MakeGrid();
-		void PieceShape(int j, int i);
+		void PieceShape();
+		void PieceMovement(int j, int i);
 
 		int mRows = 10;
 		int mColumns = 24;
+
+		Vector2 newPos[4];
+		Vector2 oldPos[4];
 
 		static LockGrid* Instance();
 		static void Release();

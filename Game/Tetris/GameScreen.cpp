@@ -109,13 +109,11 @@ namespace SDLFramework
 		{
 			if (mInput->KeyPressed(SDL_SCANCODE_SPACE))
 			{
-				if (mGrid->rotate > 2)
+				for (int p = 0; p < 4; p++)
 				{
-					mGrid->rotate = 0;
-				}
-				else
-				{
-					mGrid->rotate++;
+					mGrid->newPos[p].x = (-1 * mGrid->oldPos[p].y);
+					mGrid->newPos[p].y = (1 * mGrid->oldPos[p].x);
+					mGrid->oldPos[p] = mGrid->newPos[p];
 				}
 				mGrid->CheckPosition();
 			}
@@ -159,6 +157,7 @@ namespace SDLFramework
 					mRandom->GetCurrentPiece();
 					mScores->AddScore(100);
 					mScores->AddLine(1);
+					mGrid->rotate = 0;
 					mGrid->NewPiece();
 					bLockedPieces = true;
 					mPieces->NewPiece();
@@ -185,6 +184,7 @@ namespace SDLFramework
 						CurrentLocationY = 0;
 						CurrentLocationX = 0;
 						bLockedPieces = true;
+						mGrid->rotate = 0;
 						mPieces->NewPiece();
 					}
 				}
