@@ -29,8 +29,8 @@ namespace SDLFramework
 		int mRows = 10;
 		int mColumns = 24;
 
-		Vector2 newPos[4];
-		Vector2 oldPos[4];
+		Vector2 newPos [4];
+		Vector2 oldPos [4];
 
 		static LockGrid* Instance();
 		static void Release();

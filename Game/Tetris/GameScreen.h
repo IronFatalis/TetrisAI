@@ -53,9 +53,6 @@ namespace SDLFramework
 		//MenuScreen* mMenuScreen;
 		Random* mRandom;
 
-		int CurrentLocationX;
-		int CurrentLocationY;
-
 		Score* mScores;
 
 	public:

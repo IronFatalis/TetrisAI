@@ -143,7 +143,7 @@ namespace SDLFramework
 					mPieces->MoveRight();
 				}
 				//needs fixed for collision
-				else if ((mGrid->pieceRow + mGrid->oldPos[0].x) > 0 && (mGrid->pieceRow + mGrid->oldPos[1].x) > 0 && (mGrid->pieceRow + mGrid->oldPos[2].x) > 0 && (mGrid->pieceRow + mGrid->oldPos[3].x) > 0 && mGrid->pieceColumn < 23 && !mGrid->LockedPiece[mGrid->pieceColumn][mGrid->pieceRow] && mInput->KeyPressed(SDL_SCANCODE_LEFT))
+				else if ((mGrid->pieceRow + mGrid->oldPos[0].x) > 0 && (mGrid->pieceRow + mGrid->oldPos[1].x) > 0 && (mGrid->pieceRow + mGrid->oldPos[2].x) > 0 && (mGrid->pieceRow + mGrid->oldPos[3].x) > 0 && mGrid->pieceColumn < 23 && !mGrid->LockedPiece[mGrid->pieceColumn][mGrid->pieceRow -1] && mInput->KeyPressed(SDL_SCANCODE_LEFT))
 				{
 					if (i == 3)
 					{
