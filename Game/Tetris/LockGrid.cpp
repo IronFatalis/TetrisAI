@@ -61,18 +61,24 @@ namespace SDLFramework
 		CheckPosition();
 	}
 
-	void LockGrid::MakeGrid()
+	void LockGrid::LockedGrid()
 	{
-		for (int i = 0; i < mColumns; i++)
+		//GridPiece[z][mColumns][mRows]
+
+		for (int p = 0; p < 4; p++)
 		{
-			for (int j = 0; j < mRows; j++)
-			{
-				/*GridPiece[j][i] = new Texture("GameSprites.png", 38, 160, 7, 7);
-				GridPiece[j][i]->SetParent(this);
-				GridPiece[j][i]->SetScale(Vector2(3.5f, 3.5f));
-				GridPiece[j][i]->SetPosition(Graphics::SCREEN_WIDTH * 0.395f + (j * slotSize), Graphics::SCREEN_HEIGHT * 0.185f + (i * slotSize));*/
-			}
+			pieceColumn = pieceColumn + oldPos[p].y;
+			pieceRow = pieceRow + oldPos[p].x;
+			GridPiece[p][pieceColumn][pieceRow] = LockedPiece[p][pieceColumn][pieceRow];
 		}
+
+
+				
+				/*for (int p = 0; p < 4; p++)
+				{
+					LockedPiece[p][mColumns][mRows]->SetPosition(Graphics::SCREEN_WIDTH * 0.395f + ((pieceRow * slotSize) + (slotSize * oldPos[p].x)), Graphics::SCREEN_HEIGHT * 0.185f + (pieceColumn * slotSize) + (slotSize * oldPos[p].y));
+				}*/
+
 	}
 
 	void LockGrid::PieceShape()

@@ -22,7 +22,7 @@ namespace SDLFramework
 		LockGrid();
 		~LockGrid();
 
-		void MakeGrid();
+		void LockedGrid();
 		void PieceShape();
 		void PieceMovement(int j, int i);
 
@@ -41,8 +41,7 @@ namespace SDLFramework
 		void NewPiece();
 
 		Texture* GridPiece[5][24][10];
-
-		int rotate = 0;
+		Texture* LockedPiece[5][24][10];
 
 		int pieceColumn = 1;
 		int pieceRow = 5;
