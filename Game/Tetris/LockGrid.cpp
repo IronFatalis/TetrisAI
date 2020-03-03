@@ -63,22 +63,18 @@ namespace SDLFramework
 
 	void LockGrid::LockedGrid()
 	{
-		//GridPiece[z][mColumns][mRows]
-
 		for (int p = 0; p < 4; p++)
 		{
 			pieceColumn = pieceColumn + oldPos[p].y;
 			pieceRow = pieceRow + oldPos[p].x;
-			GridPiece[p][pieceColumn][pieceRow] = LockedPiece[p][pieceColumn][pieceRow];
+			LockedPiece[pieceColumn][pieceRow] = true;
+			DrawLockedPiece[pieceColumn][pieceRow] = new Texture("GameSprites.png", 38, 160, 7, 7);
+			DrawLockedPiece[pieceColumn][pieceRow]->SetParent(this);
+			DrawLockedPiece[pieceColumn][pieceRow]->SetScale(Vector2(3.5f, 3.5f));
+			DrawLockedPiece[pieceColumn][pieceRow]->SetPosition(Graphics::SCREEN_WIDTH * 0.395f + (((pieceRow - oldPos[p].x) * slotSize) + (slotSize * oldPos[p].x)), Graphics::SCREEN_HEIGHT * 0.185f + (((pieceColumn- oldPos[p].y) * slotSize) + (slotSize * oldPos[p].y)));
+			pieceColumn = pieceColumn - oldPos[p].y;
+			pieceRow = pieceRow - oldPos[p].x;
 		}
-
-
-				
-				/*for (int p = 0; p < 4; p++)
-				{
-					LockedPiece[p][mColumns][mRows]->SetPosition(Graphics::SCREEN_WIDTH * 0.395f + ((pieceRow * slotSize) + (slotSize * oldPos[p].x)), Graphics::SCREEN_HEIGHT * 0.185f + (pieceColumn * slotSize) + (slotSize * oldPos[p].y));
-				}*/
-
 	}
 
 	void LockGrid::PieceShape()
@@ -134,7 +130,7 @@ namespace SDLFramework
 	{
 		for (int p = 0; p < 4; p++)
 		{
-			GridPiece[p][mColumns][mRows]->SetPosition(Graphics::SCREEN_WIDTH * 0.395f + ((j * slotSize) + (slotSize * oldPos[p].x)), Graphics::SCREEN_HEIGHT * 0.185f + (i * slotSize) + (slotSize * oldPos[p].y));
+			GridPiece[p][mColumns][mRows]->SetPosition(Graphics::SCREEN_WIDTH * 0.395f + ((pieceRow * slotSize) + (slotSize * oldPos[p].x)), Graphics::SCREEN_HEIGHT * 0.185f + (pieceColumn * slotSize) + (slotSize * oldPos[p].y));
 		}
 	}
 
