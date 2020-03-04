@@ -56,6 +56,7 @@ namespace SDLFramework
 
 		int checkLR[4];
 		int checkUD[4];
+		int linesCleared;
 
 	public:
 		

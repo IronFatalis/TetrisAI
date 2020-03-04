@@ -22,13 +22,13 @@ private:
 
 	std::string Level = "01";
 	int tLevel = std::stoi(Level);
-	float Speed = 10 / tLevel;
+	
 
 	std::string HiScore = "100000";
 	int tHiScore = std::stoi(HiScore);
 
 	int LineNum = 0;
-	int LineCounter = 0;
+	
 	std::string tLine = std::to_string(LineNum);
 
 	std::string Height = "00";
@@ -87,6 +87,8 @@ public:
 	static Score* Instance();
 	static void Release();
 
+	float Speed = 10 / tLevel;
+	int LineCounter = 0;
 	int mAddScore = 0;
 	std::string mScore = std::to_string(mAddScore);
 };

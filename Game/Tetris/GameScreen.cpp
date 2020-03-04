@@ -14,23 +14,8 @@ namespace SDLFramework
 		mScores = Score::Instance();
 
 		//sanity test for scores
-		mScores->AddScore(100);
 		mScores->AddHeight("10");
-		mScores->AddLine(2);
-		mScores->AddLevel("13");
 		mScores->AddtoHiScore("2345");
-
-		if (mGrid->Instance())
-		{
-			std::printf("instance made on game screen ");
-		}
-
-
-		/*mRandom->SetNextPiece();
-		mRandom->GetCurrentPiece();
-		mRandom->SetCurrentPiece();
-		mRandom->SetNextPiece();
-		mRandom->GetCurrentPiece();*/
 
 		//background
 		mBackground = new Texture("GameSprites.png", 0, 0, 260, 243);
@@ -169,7 +154,7 @@ namespace SDLFramework
 					}
 				}
 
-				if (PieceDrop >= 10)	//speed
+				if (PieceDrop >= mScores->Speed)	//speed
 				{
 					mTimer->Reset();
 					PieceDrop = 0;
@@ -185,28 +170,34 @@ namespace SDLFramework
 						mRandom->SetCurrentPiece();
 						mRandom->SetNextPiece();
 						mRandom->GetCurrentPiece();
-						mScores->AddScore(100);
-						mScores->AddLine(1);
 						mGrid->NewPiece();
+						linesCleared = 0;
 					}
 				}
 				else
 				{
 					PieceDrop += mTimer->DeltaTime();
 					mTimer->Update();
-					mScores->AddLine(1);
+					
 				}
 			}
 
-			//turn into a funtion
-			for (int l = 0; l < 24; l++)
+			for (int l = 23; l >= 0; l--)
 			{
 				if (mGrid->LockedPiece[l][0]&& mGrid->LockedPiece[l][1] && mGrid->LockedPiece[l][2] && mGrid->LockedPiece[l][3] && mGrid->LockedPiece[l][4] && mGrid->LockedPiece[l][5] && mGrid->LockedPiece[l][6] && mGrid->LockedPiece[l][7] && mGrid->LockedPiece[l][8] && mGrid->LockedPiece[l][9])
 				{
 					for (int n = 0; n < 10; n++)
 					{
 						mGrid->LockedPiece[l][n] = false;
+						for (int d = l; d > 0; d--)
+						{
+							mGrid->LockedPiece[d][n] = mGrid->LockedPiece[d-1][n];
+						}
 					}
+					linesCleared++;
+					mScores->AddLine(1);
+					mScores->AddScore(1000 * linesCleared);
+					mScores ->LineCounter += linesCleared;
 				}
 			}
 		}

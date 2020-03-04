@@ -193,7 +193,7 @@ void Score::UpdateStats()
 		mIStat->SetPosition(Graphics::SCREEN_WIDTH * 0.25f, Graphics::SCREEN_HEIGHT * 0.85f);
 		break;
 	}
-	LineCounter += 1;
+	
 	if (LineCounter == 10)
 	{
 		tLevel += 1;
