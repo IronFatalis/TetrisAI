@@ -111,8 +111,10 @@ namespace SDLFramework
 				{
 					mGrid->newPos[p].x = (-1 * mGrid->oldPos[p].y);
 					mGrid->newPos[p].y = (1 * mGrid->oldPos[p].x);
+					checkLR[p] = (mGrid->pieceRow + mGrid->newPos[p].x);
+					checkUD[p] = (mGrid->pieceColumn + mGrid->newPos[p].y);
 				}
-				if ((mGrid->pieceRow + mGrid->newPos[0].x) < 9 && (mGrid->pieceRow + mGrid->newPos[0].x) > 0 && (mGrid->pieceRow + mGrid->newPos[1].x) < 9 && (mGrid->pieceRow + mGrid->newPos[1].x) > 0 && (mGrid->pieceRow + mGrid->newPos[2].x) < 9 && (mGrid->pieceRow + mGrid->newPos[2].x) > 0 && (mGrid->pieceRow + mGrid->newPos[3].x) < 9 && (mGrid->pieceRow + mGrid->newPos[3].x) > 0 && mGrid->pieceColumn < 23)
+				if ((mGrid->pieceRow + mGrid->newPos[0].x) < 9 && (mGrid->pieceRow + mGrid->newPos[0].x) > 0 && (mGrid->pieceRow + mGrid->newPos[1].x) < 9 && (mGrid->pieceRow + mGrid->newPos[1].x) > 0 && (mGrid->pieceRow + mGrid->newPos[2].x) < 9 && (mGrid->pieceRow + mGrid->newPos[2].x) > 0 && (mGrid->pieceRow + mGrid->newPos[3].x) < 9 && (mGrid->pieceRow + mGrid->newPos[3].x) > 0 && mGrid->pieceColumn < 23 && !mGrid->LockedPiece[checkUD[0]][checkLR[0]] && !mGrid->LockedPiece[checkUD[1]][checkLR[1]] && !mGrid->LockedPiece[checkUD[2]][checkLR[2]] && !mGrid->LockedPiece[checkUD[3]][checkLR[3]])
 				{
 					for (int p = 0; p < 4; p++)
 					{
