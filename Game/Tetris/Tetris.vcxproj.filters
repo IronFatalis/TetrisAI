@@ -84,9 +84,6 @@
     <ClCompile Include="TypeManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="LockBlock.cpp">
-      <Filter>Source Files\Tetris</Filter>
-    </ClCompile>
     <ClCompile Include="LockGrid.cpp">
       <Filter>Source Files\Tetris</Filter>
     </ClCompile>
@@ -148,9 +145,6 @@
     </ClInclude>
     <ClInclude Include="TypeManager.h">
       <Filter>Header Files\Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="LockBlock.h">
-      <Filter>Header Files\Tetris</Filter>
     </ClInclude>
     <ClInclude Include="LockGrid.h">
       <Filter>Header Files\Tetris</Filter>

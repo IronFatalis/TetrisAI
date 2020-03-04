@@ -2,7 +2,6 @@
 #define __LOCKGRID_H
 #include "GameEntity.h"
 #include "AnimatedTexture.h" //for testing where the grid is
-#include "LockBlock.h"
 #include "Random.h"
 #include <vector>
 
