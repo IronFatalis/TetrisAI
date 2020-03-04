@@ -138,7 +138,7 @@ namespace SDLFramework
 					checkLR[p] = (mGrid->pieceRow + mGrid->oldPos[p].x);
 					checkUD[p] = (mGrid->pieceColumn + mGrid->oldPos[p].y);
 				}
-				if ((mGrid->pieceRow + mGrid->oldPos[0].x) < 9 && (mGrid->pieceRow + mGrid->oldPos[1].x) < 9 && (mGrid->pieceRow + mGrid->oldPos[2].x) < 9 && (mGrid->pieceRow + mGrid->oldPos[3].x) < 9 && mGrid->pieceColumn < 23 && !mGrid->LockedPiece[checkUD[0]][checkLR[0]+1] && !mGrid->LockedPiece[checkUD[1]][checkLR[1] + 1] && !mGrid->LockedPiece[checkUD[2]][checkLR[2] + 1] && !mGrid->LockedPiece[checkUD[3]][checkLR[3] + 1] && mInput->KeyPressed(SDL_SCANCODE_RIGHT))
+				if ((mGrid->pieceRow + mGrid->oldPos[0].x) < 9 && (mGrid->pieceRow + mGrid->oldPos[1].x) < 9 && (mGrid->pieceRow + mGrid->oldPos[2].x) < 9 && (mGrid->pieceRow + mGrid->oldPos[3].x) < 9 && !mGrid->LockedPiece[checkUD[0]][checkLR[0]+1] && !mGrid->LockedPiece[checkUD[1]][checkLR[1] + 1] && !mGrid->LockedPiece[checkUD[2]][checkLR[2] + 1] && !mGrid->LockedPiece[checkUD[3]][checkLR[3] + 1] && mInput->KeyPressed(SDL_SCANCODE_RIGHT))
 				{
 					if (i == 3)
 					{
@@ -148,7 +148,7 @@ namespace SDLFramework
 					}
 					mPieces->MoveRight();
 				}
-				else if ((mGrid->pieceRow + mGrid->oldPos[0].x) > 0 && (mGrid->pieceRow + mGrid->oldPos[1].x) > 0 && (mGrid->pieceRow + mGrid->oldPos[2].x) > 0 && (mGrid->pieceRow + mGrid->oldPos[3].x) > 0 && mGrid->pieceColumn < 23 && !mGrid->LockedPiece[checkUD[0]][checkLR[0] - 1] && !mGrid->LockedPiece[checkUD[1]][checkLR[1] - 1] && !mGrid->LockedPiece[checkUD[2]][checkLR[2] - 1] && !mGrid->LockedPiece[checkUD[3]][checkLR[3] - 1] && mInput->KeyPressed(SDL_SCANCODE_LEFT))
+				else if ((mGrid->pieceRow + mGrid->oldPos[0].x) > 0 && (mGrid->pieceRow + mGrid->oldPos[1].x) > 0 && (mGrid->pieceRow + mGrid->oldPos[2].x) > 0 && (mGrid->pieceRow + mGrid->oldPos[3].x) > 0  && !mGrid->LockedPiece[checkUD[0]][checkLR[0] - 1] && !mGrid->LockedPiece[checkUD[1]][checkLR[1] - 1] && !mGrid->LockedPiece[checkUD[2]][checkLR[2] - 1] && !mGrid->LockedPiece[checkUD[3]][checkLR[3] - 1] && mInput->KeyPressed(SDL_SCANCODE_LEFT))
 				{
 					if (i == 3)
 					{
@@ -168,17 +168,6 @@ namespace SDLFramework
 						mTimer->Reset();
 					}
 				}
-				else if ((mGrid->pieceColumn - mGrid->oldPos[0].y) >= 22 || (mGrid->pieceColumn - mGrid->oldPos[1].y) >= 22 || (mGrid->pieceColumn - mGrid->oldPos[2].y) >= 22 || (mGrid->pieceColumn - mGrid->oldPos[3].y) >= 22 || mGrid->LockedPiece[checkUD[0] + 1][checkLR[0]] || mGrid->LockedPiece[checkUD[1] + 1][checkLR[1]] || mGrid->LockedPiece[checkUD[2] + 1][checkLR[2]] || mGrid->LockedPiece[checkUD[3] + 1][checkLR[3]])
-				{
-					mAudio->PlaySFX("SFX/HitFloor.wav", 0, 1);
-					mGrid->LockedGrid();
-					mRandom->SetCurrentPiece();
-					mRandom->SetNextPiece();
-					mRandom->GetCurrentPiece();
-					mScores->AddScore(100);
-					mScores->AddLine(1);
-					mGrid->NewPiece();
-				}
 
 				if (PieceDrop >= 10)	//speed
 				{
@@ -193,10 +182,12 @@ namespace SDLFramework
 					{
 						mAudio->PlaySFX("SFX/HitFloor.wav", 0, 1);
 						mGrid->LockedGrid();
-						mGrid->NewPiece();
-
+						mRandom->SetCurrentPiece();
+						mRandom->SetNextPiece();
 						mRandom->GetCurrentPiece();
+						mScores->AddScore(100);
 						mScores->AddLine(1);
+						mGrid->NewPiece();
 					}
 				}
 				else
@@ -204,6 +195,18 @@ namespace SDLFramework
 					PieceDrop += mTimer->DeltaTime();
 					mTimer->Update();
 					mScores->AddLine(1);
+				}
+			}
+
+			//turn into a funtion
+			for (int l = 0; l < 24; l++)
+			{
+				if (mGrid->LockedPiece[l][0]&& mGrid->LockedPiece[l][1] && mGrid->LockedPiece[l][2] && mGrid->LockedPiece[l][3] && mGrid->LockedPiece[l][4] && mGrid->LockedPiece[l][5] && mGrid->LockedPiece[l][6] && mGrid->LockedPiece[l][7] && mGrid->LockedPiece[l][8] && mGrid->LockedPiece[l][9])
+				{
+					for (int n = 0; n < 10; n++)
+					{
+						mGrid->LockedPiece[l][n] = false;
+					}
 				}
 			}
 		}
