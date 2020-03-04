@@ -52,8 +52,10 @@ namespace SDLFramework
 
 		//MenuScreen* mMenuScreen;
 		Random* mRandom;
-
 		Score* mScores;
+
+		int checkLR[4];
+		int checkUD[4];
 
 	public:
 		

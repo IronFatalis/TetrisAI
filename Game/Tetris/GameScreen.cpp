@@ -131,8 +131,12 @@ namespace SDLFramework
 			}
 			for (int i = 0; i < 4; ++i)
 			{
-				//needs fixed for collision
-				if ((mGrid->pieceRow + mGrid->oldPos[0].x) < 9 && (mGrid->pieceRow + mGrid->oldPos[1].x) < 9 && (mGrid->pieceRow + mGrid->oldPos[2].x) < 9 && (mGrid->pieceRow + mGrid->oldPos[3].x) < 9 && mGrid->pieceColumn < 23 && !mGrid->LockedPiece[mGrid->pieceColumn][mGrid->pieceRow + 1] && mInput->KeyPressed(SDL_SCANCODE_RIGHT))
+				for (int p = 0; p < 4; p++)
+				{
+					checkLR[p] = (mGrid->pieceRow + mGrid->oldPos[p].x);
+					checkUD[p] = (mGrid->pieceColumn + mGrid->oldPos[p].y);
+				}
+				if ((mGrid->pieceRow + mGrid->oldPos[0].x) < 9 && (mGrid->pieceRow + mGrid->oldPos[1].x) < 9 && (mGrid->pieceRow + mGrid->oldPos[2].x) < 9 && (mGrid->pieceRow + mGrid->oldPos[3].x) < 9 && mGrid->pieceColumn < 23 && !mGrid->LockedPiece[checkUD[0]][checkLR[0]+1] && !mGrid->LockedPiece[checkUD[1]][checkLR[1] + 1] && !mGrid->LockedPiece[checkUD[2]][checkLR[2] + 1] && !mGrid->LockedPiece[checkUD[3]][checkLR[3] + 1] && mInput->KeyPressed(SDL_SCANCODE_RIGHT))
 				{
 					if (i == 3)
 					{
@@ -142,8 +146,7 @@ namespace SDLFramework
 					}
 					mPieces->MoveRight();
 				}
-				//needs fixed for collision
-				else if ((mGrid->pieceRow + mGrid->oldPos[0].x) > 0 && (mGrid->pieceRow + mGrid->oldPos[1].x) > 0 && (mGrid->pieceRow + mGrid->oldPos[2].x) > 0 && (mGrid->pieceRow + mGrid->oldPos[3].x) > 0 && mGrid->pieceColumn < 23 && !mGrid->LockedPiece[mGrid->pieceColumn][mGrid->pieceRow -1] && mInput->KeyPressed(SDL_SCANCODE_LEFT))
+				else if ((mGrid->pieceRow + mGrid->oldPos[0].x) > 0 && (mGrid->pieceRow + mGrid->oldPos[1].x) > 0 && (mGrid->pieceRow + mGrid->oldPos[2].x) > 0 && (mGrid->pieceRow + mGrid->oldPos[3].x) > 0 && mGrid->pieceColumn < 23 && !mGrid->LockedPiece[checkUD[0]][checkLR[0] - 1] && !mGrid->LockedPiece[checkUD[1]][checkLR[1] - 1] && !mGrid->LockedPiece[checkUD[2]][checkLR[2] - 1] && !mGrid->LockedPiece[checkUD[3]][checkLR[3] - 1] && mInput->KeyPressed(SDL_SCANCODE_LEFT))
 				{
 					if (i == 3)
 					{
@@ -153,8 +156,7 @@ namespace SDLFramework
 					}
 					mPieces->MoveLeft();
 				}
-				//needs fixed for collision
-				else if ((mGrid->pieceColumn + mGrid->oldPos[0].y) < 23 && (mGrid->pieceColumn + mGrid->oldPos[1].y) < 23 && (mGrid->pieceColumn + mGrid->oldPos[2].y) < 23 && (mGrid->pieceColumn + mGrid->oldPos[3].y) < 23 && !mGrid->LockedPiece[mGrid->pieceColumn+1][mGrid->pieceRow] && mInput->KeyDown(SDL_SCANCODE_DOWN))
+				else if ((mGrid->pieceColumn + mGrid->oldPos[0].y) < 23 && (mGrid->pieceColumn + mGrid->oldPos[1].y) < 23 && (mGrid->pieceColumn + mGrid->oldPos[2].y) < 23 && (mGrid->pieceColumn + mGrid->oldPos[3].y) < 23 && !mGrid->LockedPiece[checkUD[0]+1][checkLR[0]] && !mGrid->LockedPiece[checkUD[1]+1][checkLR[1]] && !mGrid->LockedPiece[checkUD[2]+1][checkLR[2]] && !mGrid->LockedPiece[checkUD[3]+1][checkLR[3]] && mInput->KeyDown(SDL_SCANCODE_DOWN))
 				{
 					if (i == 3)
 					{
@@ -164,8 +166,7 @@ namespace SDLFramework
 						mTimer->Reset();
 					}
 				}
-				//needs fixed for collision
-				else if ((mGrid->pieceColumn - mGrid->oldPos[0].y) >= 22 || (mGrid->pieceColumn - mGrid->oldPos[1].y) >= 22 || (mGrid->pieceColumn - mGrid->oldPos[2].y) >= 22 || (mGrid->pieceColumn - mGrid->oldPos[3].y) >= 22 || mGrid->LockedPiece[mGrid->pieceColumn+1][mGrid->pieceRow])
+				else if ((mGrid->pieceColumn - mGrid->oldPos[0].y) >= 22 || (mGrid->pieceColumn - mGrid->oldPos[1].y) >= 22 || (mGrid->pieceColumn - mGrid->oldPos[2].y) >= 22 || (mGrid->pieceColumn - mGrid->oldPos[3].y) >= 22 || mGrid->LockedPiece[checkUD[0] + 1][checkLR[0]] || mGrid->LockedPiece[checkUD[1] + 1][checkLR[1]] || mGrid->LockedPiece[checkUD[2] + 1][checkLR[2]] || mGrid->LockedPiece[checkUD[3] + 1][checkLR[3]])
 				{
 					mAudio->PlaySFX("SFX/HitFloor.wav", 0, 1);
 					mGrid->LockedGrid();
@@ -181,7 +182,7 @@ namespace SDLFramework
 				{
 					mTimer->Reset();
 					PieceDrop = 0;
-					if ((mGrid->pieceColumn + mGrid->oldPos[0].y) < 23 && (mGrid->pieceColumn + mGrid->oldPos[1].y) < 23 && (mGrid->pieceColumn + mGrid->oldPos[2].y) < 23 && (mGrid->pieceColumn + mGrid->oldPos[3].y) < 23)
+					if ((mGrid->pieceColumn + mGrid->oldPos[0].y) < 23 && (mGrid->pieceColumn + mGrid->oldPos[1].y) < 23 && (mGrid->pieceColumn + mGrid->oldPos[2].y) < 23 && (mGrid->pieceColumn + mGrid->oldPos[3].y) < 23 && !mGrid->LockedPiece[checkUD[0] + 1][checkLR[0]] && !mGrid->LockedPiece[checkUD[1] + 1][checkLR[1]] && !mGrid->LockedPiece[checkUD[2] + 1][checkLR[2]] && !mGrid->LockedPiece[checkUD[3] + 1][checkLR[3]])
 					{
 							mGrid->pieceColumn++;
 							mGrid->CheckPosition();
