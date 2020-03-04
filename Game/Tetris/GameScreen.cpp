@@ -172,6 +172,7 @@ namespace SDLFramework
 						mRandom->GetCurrentPiece();
 						mGrid->NewPiece();
 						linesCleared = 0;
+						mScores->UpdateStats();
 					}
 				}
 				else
@@ -198,6 +199,8 @@ namespace SDLFramework
 					mScores->AddLine(1);
 					mScores->AddScore(1000 * linesCleared);
 					mScores ->LineCounter += linesCleared;
+					mScores->LineNum = mScores->LineNum + linesCleared;
+					mScores->AddLine(mScores->LineNum);
 				}
 			}
 		}

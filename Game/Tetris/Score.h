@@ -26,8 +26,6 @@ private:
 
 	std::string HiScore = "100000";
 	int tHiScore = std::stoi(HiScore);
-
-	int LineNum = 0;
 	
 	std::string tLine = std::to_string(LineNum);
 
@@ -88,6 +86,7 @@ public:
 	static void Release();
 
 	float Speed = 10 / tLevel;
+	int LineNum = 0;
 	int LineCounter = 0;
 	int mAddScore = 0;
 	std::string mScore = std::to_string(mAddScore);
