@@ -2,6 +2,7 @@
 #define CPUSTATES_H
 #include "State.h"
 #include "Random.h"
+#include "GameScreen.h"
 
 
 class CPU;

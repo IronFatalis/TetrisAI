@@ -194,7 +194,7 @@ void Score::UpdateStats()
 		break;
 	}
 	
-	if (LineCounter == 10)
+	if (LineCounter > 9)
 	{
 		tLevel += 1;
 		SetSpeed(10);
@@ -202,7 +202,7 @@ void Score::UpdateStats()
 		mLevel = new Texture(Level, "emulogic.ttf", 32, { 255, 255, 255 });
 		mLevel->SetParent(this);
 		mLevel->SetPosition(Graphics::SCREEN_WIDTH * 0.835f, Graphics::SCREEN_HEIGHT * 0.745f);
-		LineCounter = 0;
+		LineCounter = LineCounter - 10;
 	}
 }
 
