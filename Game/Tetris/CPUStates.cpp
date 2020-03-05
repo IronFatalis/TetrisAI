@@ -5,121 +5,110 @@ using std::cout;
 using std::endl;
 
 
-CPUCheckFirstPiece* CPUCheckFirstPiece::Instance()
+ST_CHECKPIECE* ST_CHECKPIECE::Instance()
 {
-	static CPUCheckFirstPiece instance;
+	static ST_CHECKPIECE instance;
 
 	return &instance;
 }
 
-void CPUCheckFirstPiece::Enter(CPU* CPU)
+void ST_CHECKPIECE::Enter(CPU* CPU)
 {
 	//when entering state
-	cout << "Check First Piece" << endl;
+	cout << "Check Piece" << endl;
+	//mRandom->GetCurrentPiece();
+	//check what piece is the current piece
 }
 
-void CPUCheckFirstPiece::Execute(CPU* CPU)
+void ST_CHECKPIECE::Execute(CPU* CPU)
 {
 	//while in state
 }
 
-void CPUCheckFirstPiece::Exit(CPU* CPU)
+void ST_CHECKPIECE::Exit(CPU* CPU)
 {
-	//when leaving
+	//when leaving switch to ST_MOVEPIECE
 }
 
 
 
 
-CPUCheckHole* CPUCheckHole::Instance()
+ST_MOVEPIECE* ST_MOVEPIECE::Instance()
 {
-	static CPUCheckHole instance;
+	static ST_MOVEPIECE instance;
 
 	return &instance;
 }
 
-void CPUCheckHole::Enter(CPU* CPU)
+void ST_MOVEPIECE::Enter(CPU* CPU)
 {
 	cout << "Checking hole" << endl;
+	//check lowest open space
+	//check which spaces around it are open
+	//check if it's accessible by looking at blocks above it
 }
 
-void CPUCheckHole::Execute(CPU* CPU)
+void ST_MOVEPIECE::Execute(CPU* CPU)
+{
+	//move current piece L/R depending on direction of open hole
+	//rotate depending on how it fits, move to ST_ROTATE
+	//check if rotate is correct and if above hole, if so move to ST_DROP
+}
+
+void ST_MOVEPIECE::Exit(CPU* CPU)
 {
 }
 
-void CPUCheckHole::Exit(CPU* CPU)
+
+
+
+
+ST_ROTATE* ST_ROTATE::Instance()
 {
-}
-
-
-
-
-
-CPUMoveToHole* CPUMoveToHole::Instance()
-{
-	static CPUMoveToHole instance;
+	static ST_ROTATE instance;
 
 	return &instance;
 }
 
-void CPUMoveToHole::Enter(CPU* CPU)
+void ST_ROTATE::Enter(CPU* CPU)
 {
-	cout << "Move to hole" << endl;
+	cout << "Rotate" << endl;
+	//check if part needs rotated
 }
 
-void CPUMoveToHole::Execute(CPU* CPU)
+void ST_ROTATE::Execute(CPU* CPU)
 {
-	
+	//rotate part if needed
 }
 
-void CPUMoveToHole::Exit(CPU* CPU)
+void ST_ROTATE::Exit(CPU* CPU)
 {
+	//move to ST_MOVEMENT
 }
 
 
 
 
 
-CPUDropPiece* CPUDropPiece::Instance()
+ST_DROP* ST_DROP::Instance()
 {
-	static CPUDropPiece instance;
+	static ST_DROP instance;
 
 	return &instance;
 }
 
-void CPUDropPiece::Enter(CPU* CPU)
+void ST_DROP::Enter(CPU* CPU)
 {
 	cout << "Drop piece" << endl;
+	//Make sure piece is over hole, if not go back to ST_MOVEMENT
 }
 
-void CPUDropPiece::Execute(CPU* CPU)
+void ST_DROP::Execute(CPU* CPU)
 {
+	//Drop piece until it locks into place
+	//Once locked switch state to ST_CHECKPIECE
 }
 
-void CPUDropPiece::Exit(CPU* CPU)
-{
-}
-
-
-
-
-
-CPUNextPiece* CPUNextPiece::Instance()
-{
-	static CPUNextPiece instance;
-
-	return &instance;
-}
-
-void CPUNextPiece::Enter(CPU* CPU)
-{
-	cout << "Finding Next Piece" << endl;
-}
-
-void CPUNextPiece::Execute(CPU* CPU)
-{
-}
-
-void CPUNextPiece::Exit(CPU* CPU)
+void ST_DROP::Exit(CPU* CPU)
 {
 }

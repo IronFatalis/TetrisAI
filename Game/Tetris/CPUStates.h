@@ -1,22 +1,23 @@
 #ifndef CPUSTATES_H
 #define CPUSTATES_H
 #include "State.h"
+#include "Random.h"
 
 
 class CPU;
 
-class CPUCheckFirstPiece : public State
+class ST_CHECKPIECE : public State
 {
 private:
 
-    CPUCheckFirstPiece() {}
+    ST_CHECKPIECE() {}
 
-    CPUCheckFirstPiece(const CPUCheckFirstPiece&);
-    CPUCheckFirstPiece& operator=(const CPUCheckFirstPiece&);
+    ST_CHECKPIECE(const ST_CHECKPIECE&);
+    ST_CHECKPIECE& operator=(const ST_CHECKPIECE&);
 
 public:
 
-    static CPUCheckFirstPiece* Instance();
+    static ST_CHECKPIECE* Instance();
 
     virtual void Enter(CPU* CPU);
 
@@ -27,18 +28,18 @@ public:
 
 
 
-class CPUCheckHole : public State
+class ST_MOVEPIECE : public State
 {
 private:
 
-    CPUCheckHole() {}
+    ST_MOVEPIECE() {}
 
-    CPUCheckHole(const CPUCheckHole&);
-    CPUCheckHole& operator=(const CPUCheckHole&);
+    ST_MOVEPIECE(const ST_MOVEPIECE&);
+    ST_MOVEPIECE& operator=(const ST_MOVEPIECE&);
 
 public:
 
-    static CPUCheckHole* Instance();
+    static ST_MOVEPIECE* Instance();
 
     virtual void Enter(CPU* CPU);
 
@@ -49,18 +50,18 @@ public:
 
 
 
-class CPUMoveToHole : public State
+class ST_ROTATE : public State
 {
 private:
 
-    CPUMoveToHole() {}
+    ST_ROTATE() {}
 
-    CPUMoveToHole(const CPUMoveToHole&);
-    CPUMoveToHole& operator=(const CPUMoveToHole&);
+    ST_ROTATE(const ST_ROTATE&);
+    ST_ROTATE& operator=(const ST_ROTATE&);
 
 public:
 
-    static CPUMoveToHole* Instance();
+    static ST_ROTATE* Instance();
 
     virtual void Enter(CPU* CPU);
 
@@ -71,18 +72,18 @@ public:
 
 
 
-class CPUDropPiece : public State
+class ST_DROP : public State
 {
 private:
 
-    CPUDropPiece() {}
+    ST_DROP() {}
 
-    CPUDropPiece(const CPUDropPiece&);
-    CPUDropPiece& operator=(const CPUDropPiece&);
+    ST_DROP(const ST_DROP&);
+    ST_DROP& operator=(const ST_DROP&);
 
 public:
 
-    static CPUDropPiece* Instance();
+    static ST_DROP* Instance();
 
     virtual void Enter(CPU* CPU);
 
@@ -90,29 +91,6 @@ public:
 
     virtual void Exit(CPU* CPU);
 };
-
-
-
-class CPUNextPiece : public State
-{
-private:
-
-    CPUNextPiece() {}
-
-    CPUNextPiece(const CPUNextPiece&);
-    CPUNextPiece& operator=(const CPUNextPiece&);
-
-public:
-
-    static CPUNextPiece* Instance();
-
-    virtual void Enter(CPU* CPU);
-
-    virtual void Execute(CPU* CPU);
-
-    virtual void Exit(CPU* CPU);
-};
-
 
 
 #endif

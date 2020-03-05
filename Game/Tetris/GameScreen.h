@@ -7,6 +7,7 @@
 #include "Score.h"
 #include "TypeManager.h"
 #include "LockGrid.h"
+#include "CPUStates.h"
 
 namespace SDLFramework
 {
@@ -20,6 +21,7 @@ namespace SDLFramework
 		TypeManager* mTypeManager;
 		Pieces* mPieces;
 		LockGrid* mLockGrid;
+		State* mCurrentState;
 
 		//background
 		Texture* mBackground;
@@ -57,6 +59,7 @@ namespace SDLFramework
 		int checkLR[4];
 		int checkUD[4];
 		int linesCleared;
+
 
 	public:
 		

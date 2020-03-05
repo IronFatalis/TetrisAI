@@ -12,6 +12,7 @@ namespace SDLFramework
 		mGrid = LockGrid::Instance();
 		mPieces = Pieces::Instance();
 		mScores = Score::Instance();
+		mCurrentState=ST_CHECKPIECE::Instance();
 
 		//sanity test for scores
 		mScores->AddHeight("10");
@@ -205,6 +206,24 @@ namespace SDLFramework
 			}
 		}
 		//code for cpu
+		//mCurrentState->Enter(ST_CHECKPIECE);
+	
+
+
+
+
+
+		//switch (currentState)
+		//{
+		//case ST_CHECKPIECE:		//figures out what piece is the current piece
+		//	break;
+		//case ST_MOVEPIECE:		//checks for empty slot, if it's accessible move towards it
+		//	break;
+		//case ST_ROTATE:			//rotates piece if needed
+		//	break;
+		//case ST_DROP:			//drops piece until it locks
+		//	break;
+		//}
 	}
 
 	void GameScreen::Render()
