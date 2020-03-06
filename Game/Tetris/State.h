@@ -1,19 +1,17 @@
 #ifndef STATE_H
 #define STATE_H
 
-class CPU;
-
 class State
 {
 public:
 
     virtual ~State() {}
 
-    virtual void Enter(CPU*) = 0;
+    virtual void Enter(int currentPiece) = 0;
 
-    virtual void Execute(CPU*) = 0;
+    virtual void Execute(int currentPiece) = 0;
 
-    virtual void Exit(CPU*) = 0;
+    virtual void Exit(int currentPiece) = 0;
 
 };
 

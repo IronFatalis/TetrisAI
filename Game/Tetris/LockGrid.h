@@ -42,6 +42,7 @@ namespace SDLFramework
 		Texture* GridPiece[5][24][10];
 		Texture* DrawLockedPiece[24][10];
 		bool LockedPiece[24][10];
+		int currentState;
 
 		int pieceColumn = 1;
 		int pieceRow = 5;

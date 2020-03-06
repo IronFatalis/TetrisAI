@@ -12,7 +12,9 @@ namespace SDLFramework
 		mGrid = LockGrid::Instance();
 		mPieces = Pieces::Instance();
 		mScores = Score::Instance();
-		mCurrentState=ST_CHECKPIECE::Instance();
+		mCurrentState=ST_CHECKPIECE::Instance(currentPiece);
+
+		currentPiece = mRandom->GetCurrentPiece();
 
 		//sanity test for scores
 		mScores->AddHeight("10");
@@ -93,78 +95,125 @@ namespace SDLFramework
 		{
 			if (mInput->KeyPressed(SDL_SCANCODE_SPACE))
 			{
-				for (int p = 0; p < 4; p++)
-				{
-					mGrid->newPos[p].x = (-1 * mGrid->oldPos[p].y);
-					mGrid->newPos[p].y = (1 * mGrid->oldPos[p].x);
-					checkLR[p] = (mGrid->pieceRow + mGrid->newPos[p].x);
-					checkUD[p] = (mGrid->pieceColumn + mGrid->newPos[p].y);
-				}
-				if ((mGrid->pieceRow + mGrid->newPos[0].x) < 9 && (mGrid->pieceRow + mGrid->newPos[0].x) > 0 && (mGrid->pieceRow + mGrid->newPos[1].x) < 9 && (mGrid->pieceRow + mGrid->newPos[1].x) > 0 && (mGrid->pieceRow + mGrid->newPos[2].x) < 9 && (mGrid->pieceRow + mGrid->newPos[2].x) > 0 && (mGrid->pieceRow + mGrid->newPos[3].x) < 9 && (mGrid->pieceRow + mGrid->newPos[3].x) > 0 && mGrid->pieceColumn < 23 && !mGrid->LockedPiece[checkUD[0]][checkLR[0]] && !mGrid->LockedPiece[checkUD[1]][checkLR[1]] && !mGrid->LockedPiece[checkUD[2]][checkLR[2]] && !mGrid->LockedPiece[checkUD[3]][checkLR[3]])
-				{
-					for (int p = 0; p < 4; p++)
-					{
-						mGrid->oldPos[p] = mGrid->newPos[p];
-					}
-				}
-				else
-				{
-					for (int p = 0; p < 4; p++)
-					{
-						mGrid->newPos[p].x = mGrid->oldPos[p].x;
-						mGrid->newPos[p].y = mGrid->oldPos[p].y;
-					}
-				}
-				mGrid->CheckPosition();
+				Rotate();
 			}
-			for (int i = 0; i < 4; ++i)
+			CheckPos();
+			MovePiece();
+		}
+		else
+		{
+			//code for cpu
+			switch (mGrid->currentState)
 			{
-				for (int p = 0; p < 4; p++)
-				{
-					checkLR[p] = (mGrid->pieceRow + mGrid->oldPos[p].x);
-					checkUD[p] = (mGrid->pieceColumn + mGrid->oldPos[p].y);
-				}
-				if ((mGrid->pieceRow + mGrid->oldPos[0].x) < 9 && (mGrid->pieceRow + mGrid->oldPos[1].x) < 9 && (mGrid->pieceRow + mGrid->oldPos[2].x) < 9 && (mGrid->pieceRow + mGrid->oldPos[3].x) < 9 && !mGrid->LockedPiece[checkUD[0]][checkLR[0] + 1] && !mGrid->LockedPiece[checkUD[1]][checkLR[1] + 1] && !mGrid->LockedPiece[checkUD[2]][checkLR[2] + 1] && !mGrid->LockedPiece[checkUD[3]][checkLR[3] + 1] && mInput->KeyPressed(SDL_SCANCODE_RIGHT))
-				{
-					if (i == 3)
-					{
-						mGrid->pieceRow++;
-						mGrid->CheckPosition();
-						mAudio->PlaySFX("SFX/LeftRight.wav", 0, 1);
-					}
-					mPieces->MoveRight();
-				}
-				else if ((mGrid->pieceRow + mGrid->oldPos[0].x) > 0 && (mGrid->pieceRow + mGrid->oldPos[1].x) > 0 && (mGrid->pieceRow + mGrid->oldPos[2].x) > 0 && (mGrid->pieceRow + mGrid->oldPos[3].x) > 0 && !mGrid->LockedPiece[checkUD[0]][checkLR[0] - 1] && !mGrid->LockedPiece[checkUD[1]][checkLR[1] - 1] && !mGrid->LockedPiece[checkUD[2]][checkLR[2] - 1] && !mGrid->LockedPiece[checkUD[3]][checkLR[3] - 1] && mInput->KeyPressed(SDL_SCANCODE_LEFT))
-				{
-					if (i == 3)
-					{
-						mGrid->pieceRow--;
-						mGrid->CheckPosition();
-						mAudio->PlaySFX("SFX/LeftRight.wav", 0, 1);
-					}
-					mPieces->MoveLeft();
-				}
-				else if ((mGrid->pieceColumn + mGrid->oldPos[0].y) < 23 && (mGrid->pieceColumn + mGrid->oldPos[1].y) < 23 && (mGrid->pieceColumn + mGrid->oldPos[2].y) < 23 && (mGrid->pieceColumn + mGrid->oldPos[3].y) < 23 && !mGrid->LockedPiece[checkUD[0] + 1][checkLR[0]] && !mGrid->LockedPiece[checkUD[1] + 1][checkLR[1]] && !mGrid->LockedPiece[checkUD[2] + 1][checkLR[2]] && !mGrid->LockedPiece[checkUD[3] + 1][checkLR[3]] && mInput->KeyDown(SDL_SCANCODE_DOWN))
-				{
-					if (i == 3)
-					{
-						mGrid->pieceColumn++;
-						mGrid->CheckPosition();
-						PieceDrop = 0;
-						mTimer->Reset();
-					}
-				}
+			case 0:
+				mCurrentState->Enter(currentPiece);
+				mGrid->currentState++;
+				break;
+			case 1:
+				mCurrentState = ST_MOVEPIECE::Instance(currentPiece);
+				mCurrentState->Enter(currentPiece);
+				mGrid->currentState++;
+				break;
+			case 2:
+				mCurrentState = ST_ROTATE::Instance(currentPiece);
+				mCurrentState->Enter(currentPiece);
+				mGrid->currentState++;
+				break;
+			case 3:
+				mCurrentState = ST_DROP::Instance(currentPiece);
+				mCurrentState->Enter(currentPiece);
+				mGrid->currentState = 0;
+				break;
 			}
 		}
 
-		if (PieceDrop >= mScores->Speed/4)	//speed
+		DropTimer();
+		ClearLine();
+	}
+
+	void GameScreen::Rotate()
+	{
+		for (int p = 0; p < 4; p++)
+		{
+			mGrid->newPos[p].x = (-1 * mGrid->oldPos[p].y);
+			mGrid->newPos[p].y = (1 * mGrid->oldPos[p].x);
+			checkLR[p] = (mGrid->pieceRow + mGrid->newPos[p].x);
+			checkUD[p] = (mGrid->pieceColumn + mGrid->newPos[p].y);
+		}
+		if ((mGrid->pieceRow + mGrid->newPos[0].x) < 9 && (mGrid->pieceRow + mGrid->newPos[0].x) > 0 && (mGrid->pieceRow + mGrid->newPos[1].x) < 9 && (mGrid->pieceRow + mGrid->newPos[1].x) > 0 && (mGrid->pieceRow + mGrid->newPos[2].x) < 9 && (mGrid->pieceRow + mGrid->newPos[2].x) > 0 && (mGrid->pieceRow + mGrid->newPos[3].x) < 9 && (mGrid->pieceRow + mGrid->newPos[3].x) > 0 && mGrid->pieceColumn < 23 && !mGrid->LockedPiece[checkUD[0]][checkLR[0]] && !mGrid->LockedPiece[checkUD[1]][checkLR[1]] && !mGrid->LockedPiece[checkUD[2]][checkLR[2]] && !mGrid->LockedPiece[checkUD[3]][checkLR[3]])
+		{
+			for (int p = 0; p < 4; p++)
+			{
+				mGrid->oldPos[p] = mGrid->newPos[p];
+			}
+		}
+		else
+		{
+			for (int p = 0; p < 4; p++)
+			{
+				mGrid->newPos[p].x = mGrid->oldPos[p].x;
+				mGrid->newPos[p].y = mGrid->oldPos[p].y;
+			}
+		}
+		mGrid->CheckPosition();
+	}
+
+	void GameScreen::CheckPos()
+	{
+		for (int p = 0; p < 4; p++)
+		{
+			checkLR[p] = (mGrid->pieceRow + mGrid->oldPos[p].x);
+			checkUD[p] = (mGrid->pieceColumn + mGrid->oldPos[p].y);
+		}
+	}
+
+	void GameScreen::MovePiece()
+	{
+		for (int i = 0; i < 4; ++i)
+		{
+			if ((mGrid->pieceRow + mGrid->oldPos[0].x) < 9 && (mGrid->pieceRow + mGrid->oldPos[1].x) < 9 && (mGrid->pieceRow + mGrid->oldPos[2].x) < 9 && (mGrid->pieceRow + mGrid->oldPos[3].x) < 9 && !mGrid->LockedPiece[checkUD[0]][checkLR[0] + 1] && !mGrid->LockedPiece[checkUD[1]][checkLR[1] + 1] && !mGrid->LockedPiece[checkUD[2]][checkLR[2] + 1] && !mGrid->LockedPiece[checkUD[3]][checkLR[3] + 1] && mInput->KeyPressed(SDL_SCANCODE_RIGHT))
+			{
+				if (i == 3)
+				{
+					mGrid->pieceRow++;
+					mGrid->CheckPosition();
+					mAudio->PlaySFX("SFX/LeftRight.wav", 0, 1);
+				}
+				mPieces->MoveRight();
+			}
+			else if ((mGrid->pieceRow + mGrid->oldPos[0].x) > 0 && (mGrid->pieceRow + mGrid->oldPos[1].x) > 0 && (mGrid->pieceRow + mGrid->oldPos[2].x) > 0 && (mGrid->pieceRow + mGrid->oldPos[3].x) > 0 && !mGrid->LockedPiece[checkUD[0]][checkLR[0] - 1] && !mGrid->LockedPiece[checkUD[1]][checkLR[1] - 1] && !mGrid->LockedPiece[checkUD[2]][checkLR[2] - 1] && !mGrid->LockedPiece[checkUD[3]][checkLR[3] - 1] && mInput->KeyPressed(SDL_SCANCODE_LEFT))
+			{
+				if (i == 3)
+				{
+					mGrid->pieceRow--;
+					mGrid->CheckPosition();
+					mAudio->PlaySFX("SFX/LeftRight.wav", 0, 1);
+				}
+				mPieces->MoveLeft();
+			}
+			else if ((mGrid->pieceColumn + mGrid->oldPos[0].y) < 23 && (mGrid->pieceColumn + mGrid->oldPos[1].y) < 23 && (mGrid->pieceColumn + mGrid->oldPos[2].y) < 23 && (mGrid->pieceColumn + mGrid->oldPos[3].y) < 23 && !mGrid->LockedPiece[checkUD[0] + 1][checkLR[0]] && !mGrid->LockedPiece[checkUD[1] + 1][checkLR[1]] && !mGrid->LockedPiece[checkUD[2] + 1][checkLR[2]] && !mGrid->LockedPiece[checkUD[3] + 1][checkLR[3]] && mInput->KeyDown(SDL_SCANCODE_DOWN))
+			{
+				if (i == 3)
+				{
+					mGrid->pieceColumn++;
+					mGrid->CheckPosition();
+					PieceDrop = 0;
+					mTimer->Reset();
+				}
+			}
+		}
+	}
+
+	void GameScreen::DropTimer()
+	{
+		if (PieceDrop >= mScores->Speed / 4)	//speed
 		{
 			mTimer->Reset();
 			PieceDrop = 0;
 			if ((mGrid->pieceColumn + mGrid->oldPos[0].y) < 23 && (mGrid->pieceColumn + mGrid->oldPos[1].y) < 23 && (mGrid->pieceColumn + mGrid->oldPos[2].y) < 23 && (mGrid->pieceColumn + mGrid->oldPos[3].y) < 23 && !mGrid->LockedPiece[checkUD[0] + 1][checkLR[0]] && !mGrid->LockedPiece[checkUD[1] + 1][checkLR[1]] && !mGrid->LockedPiece[checkUD[2] + 1][checkLR[2]] && !mGrid->LockedPiece[checkUD[3] + 1][checkLR[3]])
 			{
-					mGrid->pieceColumn++;
-					mGrid->CheckPosition();
+				mGrid->pieceColumn++;
+				mGrid->CheckPosition();
 			}
 			else
 			{
@@ -181,50 +230,33 @@ namespace SDLFramework
 		else
 		{
 			PieceDrop += mTimer->DeltaTime();
-			mTimer->Update();		
+			mTimer->Update();
 		}
-			
+	}
 
+	void GameScreen::ClearLine()
+	{
 		for (int l = 23; l >= 0; l--)
 		{
-			if (mGrid->LockedPiece[l][0]&& mGrid->LockedPiece[l][1] && mGrid->LockedPiece[l][2] && mGrid->LockedPiece[l][3] && mGrid->LockedPiece[l][4] && mGrid->LockedPiece[l][5] && mGrid->LockedPiece[l][6] && mGrid->LockedPiece[l][7] && mGrid->LockedPiece[l][8] && mGrid->LockedPiece[l][9])
+			if (mGrid->LockedPiece[l][0] && mGrid->LockedPiece[l][1] && mGrid->LockedPiece[l][2] && mGrid->LockedPiece[l][3] && mGrid->LockedPiece[l][4] && mGrid->LockedPiece[l][5] && mGrid->LockedPiece[l][6] && mGrid->LockedPiece[l][7] && mGrid->LockedPiece[l][8] && mGrid->LockedPiece[l][9])
 			{
 				for (int n = 0; n < 10; n++)
 				{
 					mGrid->LockedPiece[l][n] = false;
 					for (int d = l; d > 0; d--)
 					{
-						mGrid->LockedPiece[d][n] = mGrid->LockedPiece[d-1][n];
+						mGrid->LockedPiece[d][n] = mGrid->LockedPiece[d - 1][n];
 					}
 				}
 				linesCleared++;
 				mScores->AddLine(1);
 				mScores->AddScore(1000 * linesCleared);
-				mScores ->LineCounter += linesCleared;
-				totalLinesCleared ++;
+				mScores->LineCounter += linesCleared;
+				totalLinesCleared++;
 				mScores->LineNum = totalLinesCleared;
 				mScores->AddLine(totalLinesCleared);
 			}
 		}
-		
-		//code for cpu
-		//mCurrentState->Enter(ST_CHECKPIECE);
-	
-		
-
-
-
-		//switch (currentState)
-		//{
-		//case ST_CHECKPIECE:		//figures out what piece is the current piece
-		//	break;
-		//case ST_MOVEPIECE:		//checks for empty slot, if it's accessible move towards it
-		//	break;
-		//case ST_ROTATE:			//rotates piece if needed
-		//	break;
-		//case ST_DROP:			//drops piece until it locks
-		//	break;
-		//}
 	}
 
 	void GameScreen::Render()

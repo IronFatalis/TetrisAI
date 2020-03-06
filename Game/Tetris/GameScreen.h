@@ -20,7 +20,7 @@ namespace SDLFramework
 		AudioManager* mAudio;
 		TypeManager* mTypeManager;
 		Pieces* mPieces;
-		LockGrid* mLockGrid;
+		LockGrid* mGrid;
 		State* mCurrentState;
 
 		//background
@@ -43,9 +43,6 @@ namespace SDLFramework
 		float mAnimationTotalTime;
 		float mAnimationTimer;
 		bool mAnimationDone;
-		
-		//collision grid
-		LockGrid* mGrid;
 
 		Texture* mLockedPieces;
 		bool bLockedPieces = false;
@@ -70,6 +67,13 @@ namespace SDLFramework
 		void Update() override;
 		void Render() override;
 
+		void Rotate();
+		void CheckPos();
+		void MovePiece();
+		void DropTimer();
+		void ClearLine();
+
+		int currentPiece;
 	};
 }
 

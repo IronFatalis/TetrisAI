@@ -2,96 +2,90 @@
 #define CPUSTATES_H
 #include "State.h"
 #include "Random.h"
+#include "LockGrid.h"
 #include "GameScreen.h"
 
-
-class CPU;
-
-class ST_CHECKPIECE : public State
+namespace SDLFramework
 {
-private:
+    class ST_CHECKPIECE : public State
+    {
+    private:
 
-    ST_CHECKPIECE() {}
+        ST_CHECKPIECE() {}
 
-    ST_CHECKPIECE(const ST_CHECKPIECE&);
-    ST_CHECKPIECE& operator=(const ST_CHECKPIECE&);
+    public:
 
-public:
+        static ST_CHECKPIECE* Instance(int currentPiece);
 
-    static ST_CHECKPIECE* Instance();
+        virtual void Enter(int currentPiece);
 
-    virtual void Enter(CPU* CPU);
+        virtual void Execute(int currentPiece);
 
-    virtual void Execute(CPU* CPU);
-
-    virtual void Exit(CPU* CPU);
-};
-
-
-
-class ST_MOVEPIECE : public State
-{
-private:
-
-    ST_MOVEPIECE() {}
-
-    ST_MOVEPIECE(const ST_MOVEPIECE&);
-    ST_MOVEPIECE& operator=(const ST_MOVEPIECE&);
-
-public:
-
-    static ST_MOVEPIECE* Instance();
-
-    virtual void Enter(CPU* CPU);
-
-    virtual void Execute(CPU* CPU);
-
-    virtual void Exit(CPU* CPU);
-};
+        virtual void Exit(int currentPiece);
+    };
 
 
 
-class ST_ROTATE : public State
-{
-private:
+    class ST_MOVEPIECE : public State
+    {
+    private:
 
-    ST_ROTATE() {}
+        ST_MOVEPIECE() {}
 
-    ST_ROTATE(const ST_ROTATE&);
-    ST_ROTATE& operator=(const ST_ROTATE&);
+    public:
 
-public:
+        static ST_MOVEPIECE* Instance(int currentPiece);
 
-    static ST_ROTATE* Instance();
+        virtual void Enter(int currentPiece);
 
-    virtual void Enter(CPU* CPU);
+        virtual void Execute(int currentPiece);
 
-    virtual void Execute(CPU* CPU);
+        virtual void Exit(int currentPiece);
 
-    virtual void Exit(CPU* CPU);
-};
+        bool rotate = true;
+        bool position = false;
+    };
 
 
 
-class ST_DROP : public State
-{
-private:
+    class ST_ROTATE : public State
+    {
+    private:
 
-    ST_DROP() {}
+        ST_ROTATE() {}
 
-    ST_DROP(const ST_DROP&);
-    ST_DROP& operator=(const ST_DROP&);
+    public:
+        int rotateAmount;
+        bool rotate = false;
+        bool position;
 
-public:
+        static ST_ROTATE* Instance(int currentPiece);
 
-    static ST_DROP* Instance();
+        virtual void Enter(int currentPiece);
 
-    virtual void Enter(CPU* CPU);
+        virtual void Execute(int currentPiece);
 
-    virtual void Execute(CPU* CPU);
+        virtual void Exit(int currentPiece);
+    };
 
-    virtual void Exit(CPU* CPU);
-};
 
+
+    class ST_DROP : public State
+    {
+    private:
+
+        ST_DROP() {}
+
+    public:
+
+        static ST_DROP* Instance(int currentPiece);
+
+        virtual void Enter(int currentPiece);
+
+        virtual void Execute(int currentPiece);
+
+        virtual void Exit(int currentPiece);
+    };
+}
 
 #endif
