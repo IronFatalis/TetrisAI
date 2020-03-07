@@ -7,11 +7,11 @@ public:
 
     virtual ~State() {}
 
-    virtual void Enter(int currentPiece) = 0;
+    virtual void Enter(int currentPiece, int currentState) = 0;
 
-    virtual void Execute(int currentPiece) = 0;
+    virtual void Execute(int currentPiece, int currentState) = 0;
 
-    virtual void Exit(int currentPiece) = 0;
+    virtual void Exit(int currentPiece, int currentState) = 0;
 
 };
 

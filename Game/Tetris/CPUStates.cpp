@@ -6,14 +6,13 @@ using std::endl;
 
 namespace SDLFramework
 {
-
-	ST_CHECKPIECE* ST_CHECKPIECE::Instance(int currentPiece)
+	ST_CHECKPIECE* ST_CHECKPIECE::Instance(int currentPiece, int currentState)
 	{
 		static ST_CHECKPIECE instance;
 		return &instance;
 	}
 
-	void ST_CHECKPIECE::Enter(int currentPiece)
+	void ST_CHECKPIECE::Enter(int currentPiece, int currentState)
 	{
 		//when entering state
 		cout << "Starting Piece ";
@@ -43,17 +42,17 @@ namespace SDLFramework
 			break;
 		}
 
-		ST_CHECKPIECE::Execute(currentPiece);
+		ST_CHECKPIECE::Execute(currentPiece, currentState);
 	}
 
-	void ST_CHECKPIECE::Execute(int currentPiece)
+	void ST_CHECKPIECE::Execute(int currentPiece, int currentState)
 	{
 		//while in state
 		cout << "Checking Piece" << endl;
-		ST_CHECKPIECE::Exit(currentPiece);
+		ST_CHECKPIECE::Exit(currentPiece, currentState);
 	}
 
-	void ST_CHECKPIECE::Exit(int currentPiece)
+	void ST_CHECKPIECE::Exit(int currentPiece, int currentState)
 	{
 		//when leaving switch to ST_MOVEPIECE
 		cout << "Done Checking Piece" << endl;
@@ -62,40 +61,40 @@ namespace SDLFramework
 
 
 
-	ST_MOVEPIECE* ST_MOVEPIECE::Instance(int currentPiece)
+	ST_MOVEPIECE* ST_MOVEPIECE::Instance(int currentPiece, int currentState)
 	{
 		static ST_MOVEPIECE instance;
-		ST_ROTATE::Instance(currentPiece);
+		ST_ROTATE::Instance(currentPiece, currentState);
 		return &instance;
 	}
 
-	void ST_MOVEPIECE::Enter(int currentPiece)
+	void ST_MOVEPIECE::Enter(int currentPiece, int currentState)
 	{
 		cout << "Checking hole" << endl;
 		//check lowest open space
 		//check which spaces around it are open
 		//check if it's accessible by looking at blocks above it
 
-		ST_MOVEPIECE::Execute(currentPiece);
+		ST_MOVEPIECE::Execute(currentPiece, currentState);
 	}
 
-	void ST_MOVEPIECE::Execute(int currentPiece)
+	void ST_MOVEPIECE::Execute(int currentPiece, int currentState)
 	{
 		//move current piece L/R depending on direction of open hole
 		//rotate depending on how it fits, move to ST_ROTATE
 		//check if rotate is correct and if above hole, if so move to ST_DROP
 
-		GameScreen::MovePiece();
+		//GameScreen::MovePiece();
 
-		ST_MOVEPIECE::Exit(currentPiece);
+		ST_MOVEPIECE::Exit(currentPiece, currentState);
 
 	}
 
-	void ST_MOVEPIECE::Exit(int currentPiece)
+	void ST_MOVEPIECE::Exit(int currentPiece, int currentState)
 	{
 		if (rotate)
 		{
-			//mGrid->currentState++;
+			currentState++;
 		}
 		else if (position)
 		{
@@ -107,24 +106,24 @@ namespace SDLFramework
 
 
 
-	ST_ROTATE* ST_ROTATE::Instance(int currentPiece)
+	ST_ROTATE* ST_ROTATE::Instance(int currentPiece, int currentState)
 	{
 		static ST_ROTATE instance;
 
 		return &instance;
 	}
 
-	void ST_ROTATE::Enter(int currentPiece)
+	void ST_ROTATE::Enter(int currentPiece, int currentState)
 	{
 		cout << "Rotate" << endl;
 		//check if part needs rotated
 	}
 
-	void ST_ROTATE::Execute(int currentPiece)
+	void ST_ROTATE::Execute(int currentPiece, int currentState)
 	{
 		//rotate part if needed
 
-		GameScreen::Rotate();
+		//Rotate();
 		rotateAmount--;
 		if (rotateAmount == 0)
 		{
@@ -132,12 +131,12 @@ namespace SDLFramework
 		}
 	}
 
-	void ST_ROTATE::Exit(int currentPiece)
+	void ST_ROTATE::Exit(int currentPiece, int currentState)
 	{
 		//move to ST_MOVEMENT
 		if (rotate)
 		{
-			ST_ROTATE::Enter(currentPiece);
+			ST_ROTATE::Enter(currentPiece, currentState);
 		}
 		else if (position)
 		{
@@ -149,21 +148,21 @@ namespace SDLFramework
 
 
 
-	ST_DROP* ST_DROP::Instance(int currentPiece)
+	ST_DROP* ST_DROP::Instance(int currentPiece, int currentState)
 	{
 		static ST_DROP instance;
 
 		return &instance;
 	}
 
-	void ST_DROP::Enter(int currentPiece)
+	void ST_DROP::Enter(int currentPiece, int currentState)
 	{
 		cout << "Drop piece" << endl;
 		//Make sure piece is over hole, if not go back to ST_MOVEMENT
-		ST_DROP::Execute(currentPiece);
+		ST_DROP::Execute(currentPiece, currentState);
 	}
 
-	void ST_DROP::Execute(int currentPiece)
+	void ST_DROP::Execute(int currentPiece, int currentState)
 	{
 		//Drop piece until it locks into place
 		//Once locked switch state to ST_CHECKPIECE
@@ -186,10 +185,10 @@ namespace SDLFramework
 				}
 			}
 		}*/
-		ST_DROP::Exit(currentPiece);
+		ST_DROP::Exit(currentPiece, currentState);
 	}
 
-	void ST_DROP::Exit(int currentPiece)
+	void ST_DROP::Exit(int currentPiece, int currentState)
 	{
 	}
 }

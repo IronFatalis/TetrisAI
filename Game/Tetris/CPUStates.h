@@ -15,13 +15,13 @@ namespace SDLFramework
 
     public:
 
-        static ST_CHECKPIECE* Instance(int currentPiece);
+        static ST_CHECKPIECE* Instance(int currentPiece, int currentState);
 
-        virtual void Enter(int currentPiece);
+        virtual void Enter(int currentPiece, int currentState);
 
-        virtual void Execute(int currentPiece);
+        virtual void Execute(int currentPiece, int currentState);
 
-        virtual void Exit(int currentPiece);
+        virtual void Exit(int currentPiece, int currentState);
     };
 
 
@@ -34,13 +34,13 @@ namespace SDLFramework
 
     public:
 
-        static ST_MOVEPIECE* Instance(int currentPiece);
+        static ST_MOVEPIECE* Instance(int currentPiece, int currentState);
 
-        virtual void Enter(int currentPiece);
+        virtual void Enter(int currentPiece, int currentState);
 
-        virtual void Execute(int currentPiece);
+        virtual void Execute(int currentPiece, int currentState);
 
-        virtual void Exit(int currentPiece);
+        virtual void Exit(int currentPiece, int currentState);
 
         bool rotate = true;
         bool position = false;
@@ -59,13 +59,13 @@ namespace SDLFramework
         bool rotate = false;
         bool position;
 
-        static ST_ROTATE* Instance(int currentPiece);
+        static ST_ROTATE* Instance(int currentPiece, int currentState);
 
-        virtual void Enter(int currentPiece);
+        virtual void Enter(int currentPiece, int currentState);
 
-        virtual void Execute(int currentPiece);
+        virtual void Execute(int currentPiece, int currentState);
 
-        virtual void Exit(int currentPiece);
+        virtual void Exit(int currentPiece, int currentState);
     };
 
 
@@ -78,13 +78,13 @@ namespace SDLFramework
 
     public:
 
-        static ST_DROP* Instance(int currentPiece);
+        static ST_DROP* Instance(int currentPiece, int currentState);
 
-        virtual void Enter(int currentPiece);
+        virtual void Enter(int currentPiece, int currentState);
 
-        virtual void Execute(int currentPiece);
+        virtual void Execute(int currentPiece, int currentState);
 
-        virtual void Exit(int currentPiece);
+        virtual void Exit(int currentPiece, int currentState);
     };
 }
 

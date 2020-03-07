@@ -12,7 +12,7 @@ namespace SDLFramework
 		mGrid = LockGrid::Instance();
 		mPieces = Pieces::Instance();
 		mScores = Score::Instance();
-		mCurrentState=ST_CHECKPIECE::Instance(currentPiece);
+		mCurrentState=ST_CHECKPIECE::Instance(currentPiece, mGrid->currentState);
 
 		currentPiece = mRandom->GetCurrentPiece();
 
@@ -106,22 +106,22 @@ namespace SDLFramework
 			switch (mGrid->currentState)
 			{
 			case 0:
-				mCurrentState->Enter(currentPiece);
+				mCurrentState->Enter(currentPiece, mGrid->currentState);
 				mGrid->currentState++;
 				break;
 			case 1:
-				mCurrentState = ST_MOVEPIECE::Instance(currentPiece);
-				mCurrentState->Enter(currentPiece);
+				mCurrentState = ST_MOVEPIECE::Instance(currentPiece,mGrid->currentState);
+				mCurrentState->Enter(currentPiece, mGrid->currentState);
 				mGrid->currentState++;
 				break;
 			case 2:
-				mCurrentState = ST_ROTATE::Instance(currentPiece);
-				mCurrentState->Enter(currentPiece);
+				mCurrentState = ST_ROTATE::Instance(currentPiece, mGrid->currentState);
+				mCurrentState->Enter(currentPiece, mGrid->currentState);
 				mGrid->currentState++;
 				break;
 			case 3:
-				mCurrentState = ST_DROP::Instance(currentPiece);
-				mCurrentState->Enter(currentPiece);
+				mCurrentState = ST_DROP::Instance(currentPiece, mGrid->currentState);
+				mCurrentState->Enter(currentPiece, mGrid->currentState);
 				mGrid->currentState = 0;
 				break;
 			}
